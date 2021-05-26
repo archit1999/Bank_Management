@@ -1,18 +1,23 @@
 import java.util.HashMap;
 
-public class AccountsHashMap {
+public class AccountsHashMap implements Storage {
 
-    HashMap<String, Account> db;
+    // db final coz' we can update it but we cant change the hashmap towards
+    // which it points...
+
+    private final HashMap<String, Account> db;
 
     AccountsHashMap(){
         this.db = new HashMap<>();
     }
 
-    void insert(String accNo, Account acc){
+    @Override
+    public void insert(String accNo, Account acc){
         db.put(accNo, acc);
     }
 
-    Account fetch(String accNo){
+    @Override
+    public Account fetch(String accNo){
         return db.get(accNo);
     }
 }

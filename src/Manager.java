@@ -10,7 +10,7 @@ public class Manager {
      will implement in newer versions
     */
 
-    AccountsHashMap db = new AccountsHashMap();
+    Storage db = new AccountsHashMap();
 
     void loop(){
         System.out.println("MENU CARD");
