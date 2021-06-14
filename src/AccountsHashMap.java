@@ -1,6 +1,6 @@
 import java.util.HashMap;
 
-public class AccountsHashMap implements Storage {
+public class AccountsHashMap implements StorageManager{
 
     // db final coz' we can update it but we cant change the hashmap towards
     // which it points...
@@ -12,13 +12,28 @@ public class AccountsHashMap implements Storage {
     }
 
     @Override
-    public void insert(String accNo, Account acc){
-        db.put(accNo, acc);
+    public String insertAcc(String name, String mobNo, String initBalance, String pin) {
+        Account acc = new Account(name, mobNo, initBalance, pin);
+        db.put(acc.bankAccNo, acc);
+        return acc.bankAccNo;
     }
 
     @Override
-    public Account fetch(String accNo){
-        return db.get(accNo);
+    public String fetchBalance(String accNo, String pin) {
+        Account acc = db.get(accNo);
+        return acc.getBalance(pin);
+    }
+
+    @Override
+    public String depositMoney(String accNo, String amount) {
+        Account acc = db.get(accNo);
+        return acc.depositMoney(amount);
+    }
+
+    @Override
+    public String withdrawMoney(String accNo, String pin, String amount) {
+        Account acc = db.get(accNo);
+        return acc.withdrawMoney(pin, amount);
     }
 }
 

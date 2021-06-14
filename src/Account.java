@@ -9,16 +9,15 @@ public class Account {
     private final String pin;
 
     private long lastAccNo = 99999999L;
-    private long lastPw = 15081999L;
 
-    Account(String name, String mobNo, String firstDeposit){
+    Account(String name, String mobNo, String firstDeposit, String pin){
         this.accHolderName = name;
         this.mobNo = mobNo;
         this.accBalance = firstDeposit;
+        this.pin = pin;
 
         this.bankAccNo = randomAccNoGen();
-        this.pin = passwordGen();
-        showAccNoAndPin();
+
     }
 
     private String randomAccNoGen(){
@@ -26,46 +25,33 @@ public class Account {
         return Long.toString(this.lastAccNo);
     }
 
-    private String passwordGen(){
-        this.lastPw++;
-        return Long.toString(this.lastPw);
-    }
-
-    private void showAccNoAndPin(){
-        // will be called only once when acc is created, to let user note down pin
-        System.out.println("kindly note your Acc no & pin :- " + this.bankAccNo + " " + this.pin);
-    }
-
     public String getBalance(String password){
         if (password.equals(this.pin))
             return accBalance;
-        return null;
+        return "-1";
     }
 
-    public boolean withdrawMoney(String password, Long amount){
-        Long balance = Long.valueOf(this.accBalance);
+    public String withdrawMoney(String password, String amount){
+        long balance = Long.parseLong(this.accBalance);
+        long amount1 = Long.parseLong(amount);
         if (password.equals(this.pin)) {
-            if (amount <= balance) {
-                balance = balance - amount;
+            if (amount1 <= balance) {
+                balance = balance - amount1;
                 this.accBalance = Long.toString(balance);
-                return true;
+                return this.accBalance;
             }
             System.out.println("Insufficient Balance... try again");
-            return false;
+            return "-3";
         }
         System.out.println("Wrong pin... try again");
-        return false;
+        return "-1";
     }
 
-    public boolean depositMoney(String password, Long amount){
+    public String depositMoney(String amount){
         long balance = Long.parseLong(this.accBalance);             // here primitive used coz
-        if (password.equals(this.pin)){
-            balance = balance + amount;                             // todo handle overflow of int
-            this.accBalance = Long.toString(balance);
-            return true;
-        }
-        System.out.println("Wrong pin... try again");
-        return false;
+        balance = balance + Long.parseLong(amount);                                 // todo handle overflow of int
+        this.accBalance = Long.toString(balance);
+        return "Success";
     }
 
 }
